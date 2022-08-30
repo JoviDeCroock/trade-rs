@@ -15,10 +15,6 @@ async fn main() {
     let ticker = &args.ticker;
     println!("Ticker: {}", ticker);
 
-    // TODO: check if valid ticker with match
-    let result = get_ticker(ticker).await;
-    match result {
-        Ok(ticker) => println!("{}", ticker.data.amount),
-        Err(e) => println!("{}", e.to_string()),
-    }
+    let result = get_ticker(ticker, coinbase::Granularity::OneMinute).await.ok().unwrap();
+    dbg!(result.first());
 }
