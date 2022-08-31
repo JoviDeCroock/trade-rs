@@ -10,7 +10,10 @@ pub enum Granularity {
 }
 
 // Vec<(timestamp, price_low, price_high, price_open, price_close)>
-pub async fn get_ticker(ticker: &String, granularity: Granularity) -> Result<Vec<(u32, f32, f32, f32, f32, f32)>, Error> {
+pub async fn get_ticker(
+    ticker: &String,
+    granularity: Granularity,
+) -> Result<Vec<(u32, f32, f32, f32, f32, f32)>, Error> {
     let translated = match granularity {
         Granularity::OneMinute => 60,
         Granularity::FiveMinutes => 300,
@@ -21,7 +24,10 @@ pub async fn get_ticker(ticker: &String, granularity: Granularity) -> Result<Vec
     };
 
     let path = format!("/products/{}/candles", ticker);
-    let request_url = format!("https://api.exchange.coinbase.com{}?granularity={}", path, translated);
+    let request_url = format!(
+        "https://api.exchange.coinbase.com{}?granularity={}",
+        path, translated
+    );
     let response = Client::new()
         .get(request_url)
         .header("User-Agent", "node-fetch")
